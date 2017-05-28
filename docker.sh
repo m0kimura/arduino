@@ -2,15 +2,15 @@
 #
   project=${PWD##*/}
 ##
-  if [ "$1" = "build" ] ; then
+  if [[ $1 = "build" ]] ; then
     if [[ ! -e $HOME/Arduino ]]; then
       mkdir $HOME/Arduino
     fi
     docker rm -f fx-${project}
-    docker build -t ${prohect} --build-arg user=$USER .
+    docker build -t ${project} --build-arg user=$USER .
 
     xhost +local:user
-    docker run -d --name fx-${project} --label type=local \
+    docker run -d --name fx-${project} \
       -e DISPLAY=$DISPLAY \
       -e XMODIFIERS=$XMODIFIERS \
       -e XIMPROGRAM=$XIMPROGRAM \
@@ -20,8 +20,8 @@
       -e TERM=xterm \
       -v /tmp/.X11-unix:/tmp/.X11-unix \
       -v /dev/ttyUSB0:/dev/ttyUSB0 \
-      -v $HOME/Arduino:/root/Arduino \
-      -v /root \
+      -v $HOME/Arduino:/home/$USER/Arduino \
+      -v /home/$USER \
       ${project}
   elif [[ $1 = "stop" ]]; then
     docker stop fx-${project}
