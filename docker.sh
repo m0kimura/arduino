@@ -11,6 +11,7 @@
 
     xhost +local:user
     docker run -d --name fx-${project} \
+      --device=/dev/ttyUSB0 \
       -e DISPLAY=$DISPLAY \
       -e XMODIFIERS=$XMODIFIERS \
       -e XIMPROGRAM=$XIMPROGRAM \
@@ -19,7 +20,6 @@
       -e LC_TYPE=ja_JP.UTF-8 \
       -e TERM=xterm \
       -v /tmp/.X11-unix:/tmp/.X11-unix \
-      -v /dev/ttyUSB0:/dev/ttyUSB0 \
       -v $HOME/Arduino:/home/$USER/Arduino \
       -v /home/$USER \
       ${project}
